@@ -1,0 +1,32 @@
+syntax = "proto3";
+option java_multiple_files = true;
+
+package com.example.grpc;
+
+message User {
+    int64 id = 1;
+    string username = 2;
+    string email = 3;
+    optional string imageUrl = 4;
+}
+
+service UserService {
+    rpc AddUser(AddUserRequest) returns (AddUserResponse);
+    rpc ListUsers(ListUsersRequest) returns (ListUsersResponse);
+}
+
+message AddUserRequest {
+    User user = 1;
+}
+
+message AddUserResponse {
+    string status = 1;
+}
+
+message ListUsersRequest {
+
+}
+
+message ListUsersResponse {
+    repeated User users = 1;
+}
