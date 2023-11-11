@@ -20,7 +20,7 @@ public class ClientBootstrap {
         StreamObserver<ChatMessage> toServer = stub.chat(new StreamObserver<ChatMessageFromServer>() {
             @Override
             public void onNext(ChatMessageFromServer value) {
-                System.out.println(String.format("%s: %s", value.getMessage().getFrom(), value.getMessage().getMessage()));
+                System.out.printf("%s: %s%n", value.getMessage().getFrom(), value.getMessage().getMessage());
             }
 
             @Override

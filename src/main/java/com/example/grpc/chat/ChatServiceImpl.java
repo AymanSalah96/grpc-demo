@@ -6,11 +6,11 @@ import java.util.LinkedHashSet;
 
 public class ChatServiceImpl extends ChatServiceGrpc.ChatServiceImplBase {
 
-    private static LinkedHashSet<StreamObserver<ChatMessageFromServer>> observers = new LinkedHashSet<>();
+    private static final LinkedHashSet<StreamObserver<ChatMessageFromServer>> OBSERVERS = new LinkedHashSet<>();
 
     @Override
     public StreamObserver<ChatMessage> chat(StreamObserver<ChatMessageFromServer> responseObserver) {
-        observers.add(responseObserver);
+        OBSERVERS.add(responseObserver);
 
         return new StreamObserver<ChatMessage>() {
             @Override
@@ -22,17 +22,17 @@ public class ChatServiceImpl extends ChatServiceGrpc.ChatServiceImplBase {
                         .build();
 
                 // send this message to all connected clients to this server
-                observers.stream().forEach(o -> o.onNext(message));
+                OBSERVERS.forEach(o -> o.onNext(message));
             }
 
             @Override
             public void onError(Throwable t) {
-                observers.remove(responseObserver);
+                OBSERVERS.remove(responseObserver);
             }
 
             @Override
             public void onCompleted() {
-                observers.remove(responseObserver);
+                OBSERVERS.remove(responseObserver);
             }
         };
     }
